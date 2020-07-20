@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,7 +32,7 @@ public class UserController {
 	public @ResponseBody CommonRespDto<?> loginProc(@RequestBody User user, HttpSession session) {
 		User persistUser = userService.로그인(user); // 실제 DB와 동기화된 오브젝트
 		
-		if(persistUser.getId() == 0) {
+		if(ObjectUtils.isEmpty(persistUser)) {
 			return new CommonRespDto<String>(-1, "로그인 실패");
 		} else {
 			// 세션 확인해야 함
