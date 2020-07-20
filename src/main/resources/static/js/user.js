@@ -26,11 +26,15 @@ let index={
 //				json으로 데이터 주고받을거기 때문에 하단  공식임
 //				js 문법 : 자바스트립트 오브젝트를 jsonString으로 바꿔즘
 				data: JSON.stringify(data),
-//				스프링은 데이터 받아서 오브젝트로 들고있기 때문에 json이 들어온다는 것을 메세지 컨버터에게 contentTypedm으로 알려줘야 오브젝트 변활할 수 있음
+//				스프링은 데이터 받아서 오브젝트로 들고있기 때문에 json이 들어온다는 것을 메세지 컨버터에게 contentType으로 알려줘야 오브젝트 변활할 수 있음
 				contentType: "application/json; charset=utf-8",
 //				서버가 응답하는 데이터 타입
 				dataType: "json"
 			}).done(function(resp){
+				if(resp.statusCode == 1) {
+					alert("회원가입 성공");
+					location.href="/";
+				}
 				console.log(resp);
 			}).fail(function(error){
 				console.log(error);
