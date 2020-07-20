@@ -4,10 +4,16 @@ let index={
 //		자바스크립트 오브젝트 생성 
 		init: function() {
 			
+//			리스너 등록 됨(리스너가 이벤트를 지켜보고 이벤트가 일어나면 OS가 이벤트의 모든 컨텍스트를 가지고 감
 //			화살표함수를 사용하여 부모를 바로 찾아가게 함
 //			함수의 이름이 없어도 실행되어야 하는 함수 : 화살표 함수 사용
 			$("#btn-save").on("click", ()=>{
-				this.save();
+				this.save(); // 콜백되는 스택
+			});
+			
+//			리스너2
+			$("#btn-login").on("click", ()=>{
+				this.login(); // 콜백되는 스택
 			});
 		
 		},
@@ -17,7 +23,7 @@ let index={
 			let data = {
 					username: $("#username").val(),
 					password: $("#password").val(),
-					email: $("#email").val(),
+					email: $("#email").val()
 			}
 			
 			$.ajax({
@@ -31,16 +37,36 @@ let index={
 //				서버가 응답하는 데이터 타입
 				dataType: "json"
 			}).done(function(resp){
-				if(resp.statusCode == 1) {
-					alert("회원가입 성공");
-					location.href="/";
-				}
+				alert("회원가입 성공");
+				location.href="/";
 				console.log(resp);
 			}).fail(function(error){
+				alert("회원가입 실패");
 				console.log(error);
 			})
-			
 		},
-}
+
+		login: function(){
+			let data = {
+					username: $("#username").val(),
+					password: $("#password").val()
+			}
+			
+			$.ajax({
+				type: "POST",
+				url: "/auth/loginProc",
+				data: JSON.stringify(data),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json"
+			}).done(function(resp){
+				alert("로그인 성공");
+				location.href="/";
+				console.log(resp);
+			}).fail(function(error){
+				alert("로그인 실패");
+				console.log(error);
+			})
+		},
+	}
 
 index.init();

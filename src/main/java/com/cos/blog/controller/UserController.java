@@ -1,5 +1,8 @@
 package com.cos.blog.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +24,19 @@ public class UserController {
 	@PostMapping("/auth/joinProc")
 	public @ResponseBody CommonRespDto<?> joinProc(@RequestBody User user) {
 		userService.회원가입(user);
-		return new CommonRespDto<String>(1, "회원가입완료");
+		return new CommonRespDto<String>(1, "회원가입 성공");
+	}
+	
+	@PostMapping("/auth/loginProc")
+	public @ResponseBody CommonRespDto<?> loginProc(@RequestBody User user, HttpSession session) {
+		User persistUser = userService.로그인(user); // 실제 DB와 동기화된 오브젝트
+		
+		if(persistUser.getId() == 0) {
+			return new CommonRespDto<String>(-1, "로그인 실패");
+		} else {
+			// 세션 확인해야 함
+			session.setAttribute("principal", persistUser);
+			return new CommonRespDto<String>(1, "로그인 성공");
+		}
 	}
 }
