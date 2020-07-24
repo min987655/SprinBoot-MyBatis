@@ -20,6 +20,7 @@ public class UserService {
 	// 커밋이 필요하기 때문에 트랜잭션 타야 함
 	@Transactional
 	public void 회원가입(User user){
+		user.setRole("ROLE_USER");
 		userRepository.save(user);
 	}
 	
