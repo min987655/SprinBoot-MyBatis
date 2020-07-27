@@ -14,4 +14,20 @@
 		SELECT * FROM post ORDER By id DESC
 	</select>
 	
+	<select id="findById" resultType="com.cos.blog.controller.dto.PostDetailRespDto">
+		select p.id, p.title, p.content, u.username 
+		from post p inner join user u 
+		on p.userId = u.id 
+		where p.id = #{id}
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM POST WHERE ID = #{id}
+	</delete>
+	
+	<update id="update">
+		UPDATE post SET title = #{title}, content=#{content} WHERE id=#{id}
+	</update>
+	
+	
 </mapper>
