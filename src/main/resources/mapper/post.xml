@@ -29,5 +29,9 @@
 		UPDATE post SET title = #{title}, content=#{content} WHERE id=#{id}
 	</update>
 	
+	<select id="findOne" resultType="com.cos.blog.model.Post">
+		SELECT * FROM post WHERE ID = #{id}
+	</select>
+	
 	
 </mapper>

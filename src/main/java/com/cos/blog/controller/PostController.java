@@ -1,5 +1,7 @@
 package com.cos.blog.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,8 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cos.blog.config.handler.exception.MyRoleException;
 import com.cos.blog.controller.dto.CommonRespDto;
 import com.cos.blog.model.Post;
+import com.cos.blog.model.User;
+import com.cos.blog.repository.PostRepository;
 import com.cos.blog.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class PostController {
 
 	private final PostService postService;
+	private final PostRepository postRepository;
 	
 //	@Autowired 한것과 같음
 //	public PostController(PostService postService) {
@@ -56,8 +62,16 @@ public class PostController {
 		return "post/detail";
 	}
 	
+	// 공통 관심사가 아니기 때문에 따로 AOP로 빼놓지 않음.
 	@DeleteMapping("/post/{id}")
-	public @ResponseBody CommonRespDto<?> deleteById(@PathVariable int id) {
+	public @ResponseBody CommonRespDto<?> deleteById(@PathVariable int id, HttpSession session) throws MyRoleException {
+		// 세션 값 확인, 글의 주인
+		User principal = (User)session.getAttribute("principal");
+		Post postEntity = postRepository.findOne(id); 
+		if (principal.getId() != postEntity.getUserId()) {
+			throw new MyRoleException(); // 아닐시 익셉션 주기 
+		}
+		
 		postService.삭제하기(id);
 		return new CommonRespDto<String>(1, "글삭제 성공");
 	}
