@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
+	// / 로 들어오면 무조건 posts로 리다이렉션 됨
 	@GetMapping({"","/"})
 	public String index() {
-		return "index";
+		return "redirect:/posts";
 	}
 	
 	@GetMapping("/auth/joinForm")

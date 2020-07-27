@@ -17,4 +17,9 @@ public class Post {
 	private String content;
 	private int userId;
 	private Timestamp createDate;
+	
+// 들고온 데이터의 포멧을 바꿈(코드는 검색하기)
+//	public String getCreateDate() {
+//		return LocalDate Time.parse(createDate+"",formatter);
+//	}
 }

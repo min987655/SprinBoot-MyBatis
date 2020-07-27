@@ -10,4 +10,8 @@
 		VALUES(#{title},#{content},#{userId}, now())
 	</insert>
 	
+	<select id="findAll" resultType="com.cos.blog.model.Post">
+		SELECT * FROM post ORDER By id DESC
+	</select>
+	
 </mapper>
